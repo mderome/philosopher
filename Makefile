@@ -6,7 +6,7 @@
 #    By: mderome <mderome@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/02 10:28:07 by mderome           #+#    #+#              #
-#    Updated: 2022/01/18 12:20:13 by mderome          ###   ########.fr        #
+#    Updated: 2022/01/18 12:35:10 by mderome          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,11 @@ SRC_PATH = ./srcs/
 SRC =	main.c		\
 		atoi.c		\
 		init_arg.c	\
+		routine.c	\
 
 SRC_BASENAME = $(addprefix $(SRC_PATH), $(SRC))
 CC =	gcc
-CFLAGS =  -pthread -I $(HEADER_PATH) #-Wall -Wextra -Werror
+CFLAGS =  -pthread -Wall -Wextra -Werror -I $(HEADER_PATH)
 
 .c.o :
 	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)

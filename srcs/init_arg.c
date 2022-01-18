@@ -6,7 +6,7 @@
 /*   By: mderome <mderome@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:13:23 by mderome           #+#    #+#             */
-/*   Updated: 2022/01/18 12:17:28 by mderome          ###   ########.fr       */
+/*   Updated: 2022/01/18 13:36:29 by mderome          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ t_philo	*init_philo(t_philo *philo, t_info *info)
 
 	i = 0;
 	if (gettimeofday(&time, NULL) == 0)
-		info->t_start = time.tv_usec;
-	pthread_mutex_init(&info->fork, NULL);
+		info->t_start = 1000 * time.tv_sec + time.tv_usec / 1000;
+	info->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * info->n_p);
 	pthread_mutex_init(&info->write, NULL);
 	philo = malloc(sizeof(t_philo) * info->n_p);
 	while (i < info->n_p)
@@ -58,6 +58,7 @@ t_philo	*init_philo(t_philo *philo, t_info *info)
 		philo[i].info = info;
 		philo[i].p_n = i + 1;
 		pthread_mutex_init(&philo[i].death, NULL);
+		pthread_mutex_init(&philo[i].info->fork[i], NULL);
 		i++;
 	}
 	return (philo);
