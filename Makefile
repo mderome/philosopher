@@ -6,7 +6,7 @@
 #    By: mderome <mderome@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/02 10:28:07 by mderome           #+#    #+#              #
-#    Updated: 2022/01/05 13:36:26 by mderome          ###   ########.fr        #
+#    Updated: 2022/01/18 12:20:13 by mderome          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,9 @@ NAME = philo
 
 HEADER_PATH = ./include/
 SRC_PATH = ./srcs/
-SRC =	main.c	\
-		atoi.c	\
+SRC =	main.c		\
+		atoi.c		\
+		init_arg.c	\
 
 SRC_BASENAME = $(addprefix $(SRC_PATH), $(SRC))
 CC =	gcc
