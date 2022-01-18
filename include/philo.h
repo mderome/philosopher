@@ -6,7 +6,7 @@
 /*   By: mderome <mderome@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 10:58:17 by mderome           #+#    #+#             */
-/*   Updated: 2022/01/18 15:37:21 by mderome          ###   ########.fr       */
+/*   Updated: 2022/01/18 16:57:49 by mderome          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ typedef struct s_info
 	long int		t_start;
 	int				n_p;
 	long int		now;
+	int				dead;
 	pthread_mutex_t	write;
 	pthread_mutex_t	*fork;
+	pthread_mutex_t	death;
 }				t_info;
 
 typedef struct s_philo
@@ -44,12 +46,13 @@ typedef struct s_philo
 	int				t_sleep;
 	int				t_lasteat;
 	long int		now;
-	pthread_mutex_t	death;
 }				t_philo;
 
-int		ft_atoi_f(char *str);
-int		start_thread(t_philo *arg, t_info *info);
-int		init_arg(t_philo *arg, t_info *info, int ac, char **av);
-void	*routine(void *arg_v);
+int			ft_atoi_f(char *str);
+int			start_thread(t_philo *arg, t_info *info);
+int			init_arg(t_philo *arg, t_info *info, int ac, char **av);
+void		*routine(void *arg_v);
+void		eating(t_philo *arg);
+long int	get_time(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mderome <mderome@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 10:58:31 by mderome           #+#    #+#             */
-/*   Updated: 2022/01/18 14:52:26 by mderome          ###   ########.fr       */
+/*   Updated: 2022/01/18 16:59:14 by mderome          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	end_thread(t_philo *arg, t_info *info)
 		i++;
 	}
 	pthread_mutex_destroy(&arg->info->write);
-	pthread_mutex_destroy(&arg->death);
+	pthread_mutex_destroy(&arg->info->death);
 	free_all((void *)arg, info);
 	return (0);
 }

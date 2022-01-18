@@ -6,7 +6,7 @@
 /*   By: mderome <mderome@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:13:23 by mderome           #+#    #+#             */
-/*   Updated: 2022/01/18 13:36:29 by mderome          ###   ########.fr       */
+/*   Updated: 2022/01/18 16:58:09 by mderome          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_philo	*init_philo(t_philo *philo, t_info *info)
 	{
 		philo[i].info = info;
 		philo[i].p_n = i + 1;
-		pthread_mutex_init(&philo[i].death, NULL);
+		pthread_mutex_init(&philo[i].info->death, NULL);
 		pthread_mutex_init(&philo[i].info->fork[i], NULL);
 		i++;
 	}
@@ -75,6 +75,7 @@ int	init_arg(t_philo *arg, t_info *info, int ac, char **av)
 			return (-1);
 		i++;
 	}
+	info->dead = 0;
 	info->n_p = ft_atoi_f(av[1]);
 	info->t_die = ft_atoi_f(av[2]);
 	info->t_eat = ft_atoi_f(av[3]);
