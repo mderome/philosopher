@@ -6,73 +6,97 @@
 /*   By: mderome <mderome@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 10:58:31 by mderome           #+#    #+#             */
-/*   Updated: 2022/01/18 16:59:14 by mderome          ###   ########.fr       */
+/*   Updated: 2022/01/31 13:03:30 by mderome          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <pthread.h>
 
-void	free_all(void *philo, t_info *info)
+void	free_all(t_info *info)
 {
-	free(info->fork);
-	free(philo);
+	if (info->fork)
+		free(info->fork);
+	info->fork = NULL;
+	if (info->philo)
+		free(info->philo);
+	info->philo = NULL;
 }
 
-int	end_thread(t_philo *arg, t_info *info)
+void	end_thread(t_info *info)
+{
+	int		i;
+	t_philo	*ph;
+
+	i = 0;
+	while (i < info->n_p)
+	{
+		ph = info->philo + i;
+		if (pthread_join(ph->thread, NULL) != 0)
+		{
+			write(2, "failed to join thread\n", 23);
+			return ;
+		}
+		i++;
+	}
+	pthread_mutex_destroy(&info->write);
+	pthread_mutex_destroy(&info->death);
+	pthread_mutex_destroy(&info->lock);
+	i = 0;
+	while (i < info->n_p)
+	{
+		pthread_mutex_destroy(info->fork + i);
+		i++;
+	}
+	free_all(info);
+}
+
+int	create_thread(t_info *info)
 {
 	int	i;
 
 	i = 0;
+	info->philo = malloc(sizeof(t_philo) * info->n_p + 1);
+	if (!info->philo)
+		return (write(2, "failed to malloc philo\n", 24));
 	while (i < info->n_p)
 	{
-		if (pthread_join(arg[i].p, NULL) != 0)
-			return (-1);
+		init_philo(info, i);
 		i++;
 	}
-	pthread_mutex_destroy(&arg->info->write);
-	pthread_mutex_destroy(&arg->info->death);
-	free_all((void *)arg, info);
 	return (0);
 }
 
-int	start_thread(t_philo *arg, t_info *info)
+void	start_thread(t_info *info)
 {
-	int			i;
-	t_timeval	time;
-
-	i = 0;
-	if (gettimeofday(&time, NULL) == 0)
-		info->t_start = 1000 * time.tv_sec + time.tv_usec / 1000;
-	while (i < info->n_p)
+	if (start_mutex(info) != 0)
 	{
-		arg[i].p_n = i + 1;
-		if (pthread_create(&arg[i].p, NULL, &routine, (void *)&arg[i]) != 0)
-		{
-			free_all((void *) arg, info);
-			return (-1);
-		}
-		i++;
+		free_all(info);
+		return ;
 	}
-	end_thread(arg, info);
-	return (0);
+	info->t_start = get_time();
+	if (create_thread(info) != 0)
+	{
+		free_all(info);
+		return ;
+	}
+	end_thread(info);
 }
 
 int	main(int ac, char **av)
 {
-	t_philo	*arg;
 	t_info	info;
 
-	arg = NULL;
 	if (ac < 5 || ac > 6)
 	{
 		write(2, "Incorrect number of arguments.", 31);
 		return (-1);
 	}
-	if (init_arg(arg, &info, ac, av) != 0)
+	if (init_arg(&info, ac, av) != 0)
 	{
 		write(2, "Bad arguments\n", 14);
 		return (-2);
 	}
+	start_thread(&info);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: mderome <mderome@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/02 10:28:07 by mderome           #+#    #+#              #
-#    Updated: 2022/01/18 16:52:10 by mderome          ###   ########.fr        #
+#    Updated: 2022/01/31 11:37:16 by mderome          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ SRC =	main.c		\
 		init_arg.c	\
 		routine.c	\
 		time.c		\
+		utils.c		\
+		print.c		\
 
 SRC_BASENAME = $(addprefix $(SRC_PATH), $(SRC))
 CC =	gcc
